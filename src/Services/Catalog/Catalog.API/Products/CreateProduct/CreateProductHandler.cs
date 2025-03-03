@@ -4,11 +4,25 @@ public record CreateProductCommand(string Name, List<string> Category, string De
     : ICommand<CreateProductResult>;
 public record CreateProductResult(Guid Id);
 
-internal class CreateProductCommandHandler(IDocumentSession session)
+public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+{
+    public CreateProductCommandValidator()
+    {
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Nombre es requerido");
+        RuleFor(x => x.Description).NotEmpty().WithMessage("Descripción es requerido");
+        RuleFor(x => x.ImageFile).NotEmpty().WithMessage("Archivo de la imagen es requerido");
+        RuleFor(x => x.Price).GreaterThan(0).WithMessage("El precio debe ser mayor que 0");
+    }
+}
+
+internal class CreateProductCommandHandler
+    (IDocumentSession session, ILogger<CreateProductCommandHandler> logger)
     : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
     public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
+        logger.LogInformation("CreateProductCommandHandler.handle called with {@Command}", command);        
+
         // create Product entity from command object
         var product = new Product
         {
