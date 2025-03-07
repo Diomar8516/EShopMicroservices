@@ -30,7 +30,7 @@ services:
       - "6379:6379"
 
   catalog.api:
-    container_name: catalog.api
+    container_name: Catalog.API
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
@@ -48,16 +48,18 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
   basket.api:
-    container_name: basket.api
+    container_name: Basket.API
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__Database=Server=basketdb;Port=5432;Database=BasketDb;User Id=postgres;Password=postgres;Include Error Detail=true
       - ConnectionStrings__Redis=distributedCache:6379
+      - GrpcSettings__DiscountUrl=https://discount.grpc:8081
     depends_on:
       - basketdb
       - distributedcache
+      - discount.grpc
     ports:
       - "6001:8080"
       - "6061:8081"
@@ -68,6 +70,7 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
   
   discount.grpc:
+    container_name: Discount.gRPC
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
