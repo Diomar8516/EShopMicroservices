@@ -92,22 +92,19 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             o => o.Payment, paymentBuilder =>
             {
                 paymentBuilder.Property(p => p.CardName)
-                        .HasMaxLength(50)
-                        .IsRequired();
+                        .HasMaxLength(50);
 
                 paymentBuilder.Property(p => p.CardNumber)
-                        .HasMaxLength(50)
+                        .HasMaxLength(24)
                         .IsRequired();
 
                 paymentBuilder.Property(p => p.Expiration)
-                        .HasMaxLength(50);
+                        .HasMaxLength(10);
 
                 paymentBuilder.Property(p => p.CVV)
-                        .HasMaxLength(180)
-                        .IsRequired();
+                        .HasMaxLength(3);
 
-                paymentBuilder.Property(p => p.PaymentMethod)
-                        .HasMaxLength(50);
+                paymentBuilder.Property(p => p.PaymentMethod);
             });
 
         builder.Property(o => o.Status)

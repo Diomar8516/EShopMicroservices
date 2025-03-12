@@ -37,8 +37,7 @@ public class Order : Aggregate<OrderId>
     }
 
 
-    public void Update(OrderId id, CustomerId customerId, OrderName orderName,
-        Address shippingAddress, Address billingAddress, Payment payment, OrderStatus status)
+    public void Update(OrderName orderName, Address shippingAddress, Address billingAddress, Payment payment, OrderStatus status)
     {
         OrderName = orderName;
         ShippingAddress = shippingAddress;
@@ -46,7 +45,7 @@ public class Order : Aggregate<OrderId>
         Payment = payment;
         Status = status;
 
-        AddDomainEvent(new OrderUpdateEvent(this));
+        AddDomainEvent(new OrderUpdatedEvent(this));
     }
 
     public void Add(ProductId productId, int quantity, decimal price)

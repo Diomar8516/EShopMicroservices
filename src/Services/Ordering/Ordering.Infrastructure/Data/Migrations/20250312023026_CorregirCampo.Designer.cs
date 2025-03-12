@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ordering.Infrastructure.Data;
 
@@ -12,13 +13,15 @@ using Ordering.Infrastructure.Data;
 namespace Ordering.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250312023026_CorregirCampo")]
+    partial class CorregirCampo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.3")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -39,9 +42,6 @@ namespace Ordering.Infrastructure.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -49,6 +49,9 @@ namespace Ordering.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("lastModified")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -72,9 +75,6 @@ namespace Ordering.Infrastructure.Data.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -86,6 +86,9 @@ namespace Ordering.Infrastructure.Data.Migrations
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("lastModified")
+                        .HasColumnType("datetime2");
 
                     b.ComplexProperty<Dictionary<string, object>>("BillingAddress", "Ordering.Domain.Models.Order.BillingAddress#Address", b1 =>
                         {
@@ -143,25 +146,28 @@ namespace Ordering.Infrastructure.Data.Migrations
 
                             b1.Property<string>("CVV")
                                 .IsRequired()
-                                .HasMaxLength(3)
-                                .HasColumnType("nvarchar(3)");
+                                .HasMaxLength(180)
+                                .HasColumnType("nvarchar(180)");
 
                             b1.Property<string>("CardName")
+                                .IsRequired()
                                 .HasMaxLength(50)
                                 .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("CardNumber")
                                 .IsRequired()
-                                .HasMaxLength(24)
-                                .HasColumnType("nvarchar(24)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Expiration")
                                 .IsRequired()
-                                .HasMaxLength(10)
-                                .HasColumnType("nvarchar(10)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
-                            b1.Property<int>("PaymentMethod")
-                                .HasColumnType("int");
+                            b1.Property<string>("PaymentMethod")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("ShippingAddress", "Ordering.Domain.Models.Order.ShippingAddress#Address", b1 =>
@@ -221,9 +227,6 @@ namespace Ordering.Infrastructure.Data.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -238,6 +241,9 @@ namespace Ordering.Infrastructure.Data.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("lastModified")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -259,9 +265,6 @@ namespace Ordering.Infrastructure.Data.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -272,6 +275,9 @@ namespace Ordering.Infrastructure.Data.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("lastModified")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

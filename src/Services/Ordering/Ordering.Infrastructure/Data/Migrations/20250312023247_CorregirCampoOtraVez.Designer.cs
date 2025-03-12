@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ordering.Infrastructure.Data;
 
@@ -12,13 +13,15 @@ using Ordering.Infrastructure.Data;
 namespace Ordering.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250312023247_CorregirCampoOtraVez")]
+    partial class CorregirCampoOtraVez
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.3")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -143,25 +146,28 @@ namespace Ordering.Infrastructure.Data.Migrations
 
                             b1.Property<string>("CVV")
                                 .IsRequired()
-                                .HasMaxLength(3)
-                                .HasColumnType("nvarchar(3)");
+                                .HasMaxLength(180)
+                                .HasColumnType("nvarchar(180)");
 
                             b1.Property<string>("CardName")
+                                .IsRequired()
                                 .HasMaxLength(50)
                                 .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("CardNumber")
                                 .IsRequired()
-                                .HasMaxLength(24)
-                                .HasColumnType("nvarchar(24)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Expiration")
                                 .IsRequired()
-                                .HasMaxLength(10)
-                                .HasColumnType("nvarchar(10)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
-                            b1.Property<int>("PaymentMethod")
-                                .HasColumnType("int");
+                            b1.Property<string>("PaymentMethod")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("ShippingAddress", "Ordering.Domain.Models.Order.ShippingAddress#Address", b1 =>
